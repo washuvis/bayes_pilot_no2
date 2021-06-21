@@ -1,0 +1,1221 @@
+<div id="task">
+    <div id="first_task">
+        <h1 id="title"></h1>
+
+        <div id="defs">
+        </div>
+        <!-- INTRO 2 -->
+        <div class="cab">
+            <div id="intro" align="left">
+            </div>
+            <br>
+            <div id="problem_text" align="left">
+            </div>
+            <div class="shelf" id="labels">
+              <span id="positive_text" style="margin:5px"></span>
+              <span id="negative_text" style="margin:5px"></span>
+              <span id="test_positive_text" style="margin:5px"></span>
+              <span id="test_negative_text" style="margin:5px"></span>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="container" id="simple-example">
+        </div>
+
+        <div id="see_questions"><input type="submit" value="I'm ready to see the question." onClick=showQ()></div>
+        <div id="answers"></div>
+    </div>
+    <!-- <div id="nextBtn"><input type="submit" value="Next"></div>
+     -->
+    <div class="second_task" id ="second_task"></div>
+    <div  id ="submit_button"></div>
+</div>
+
+<iframe id="nasatlx_iframe" width="1000" height="2000" frameBorder="0"></iframe>
+
+
+<script type="text/javascript">
+//=======primary task global variables========
+
+var ans1={
+   "pregnancy":20,
+    "disease": 20,
+    "posture":20,
+    "rolex":70,
+    "cab": 15,
+    "dui": 39,
+    "childAccidents":40,
+    "class": 30,
+    "admission": 44,
+    "cookies": 38
+
+}
+var ans2={
+   "pregnancy":18,
+    "disease": 4,
+    "posture":2,
+    "rolex":20,
+    "cab": 12,
+    "dui": 7,
+    "childAccidents":1,
+    "class": 20,
+    "admission":27 ,
+    "cookies": 11
+}
+var q1={
+   "pregnancy":"How many people will test positive?",
+    "disease": "How many people will test positive?",
+    "posture":"How many students will carry all their books to school?",
+    "rolex":"How many people wear rolex?",
+    "cab": "How many people will say the car was blue?",
+    "dui": "How many accidents will be caused by drunk drivers?",
+    "childAccidents":"How many will live in an urban area?",
+    "class": "How many people will plan on going into business?",
+    "cookies": "How many cookies in the package are round?",
+    "admissions":"How many people will be predicted to be accepted?"
+
+}
+
+var q2={
+   "pregnancy":"Of those who test positive, how many are actually pregnant?" ,
+    "disease":  "Of those who test positive, how many actually have the disease?",
+    "posture":"Of those who carry all their books to school, how many will have bad posture?",
+    "cab": "Of those who say the car was blue, how many will say the car was a cab?",
+    "rolex":"Of those who wear rolex, how many are executives?",
+    "dui": "Of those that are caused by drunk drivers, how many will be serious?",
+    "childAccidents": "Of those who live in an urban area, how many will be involved in an accident?",
+    "class": "Of those who plan on going into business, how many will be enrolled in an introductory entrepreneurship class?",
+    "cookies": "Of those round cookies, how many of them are salty?",
+    "admissions": "Of those who are predicted, how many will actually be accepted?"
+
+}
+
+var intros={
+"pregnancy": "At home pregnancy tests detect the presence of hCG hormone in urine, which indicates pregnancy. However, home pregnancy tests are not perfect. Here is some information about the current research on home pregnancy tests and efforts to increase their accuracy.",
+"disease": "There is a newly discovered disease, Disease X, which is transmitted by a bacterial infection found in the population. There is a test to detect whether or not a person has the disease, but it is not perfect. Here is some information about the current research on Disease X and efforts to test for the infection that causes it.",
+"cab":"A car was involved in a hit-and-run accident at night. Two cab companies, the Green and the Blue, operate in the city. Here is some information about the cabs.",
+"posture":"Children as young as seven years old are suffering from back problems due to poor posture. Some schools have made efforts at minimizing the risk factors for developing back posture by providing lockers so that students can avoid carrying heavy backpacks. Here is some information about the current research on bad posture and efforts to test for the factors that cause it.",
+"rolex": "Rolex is a well-known brand of watches and the company devotes significant resources to maintaining a particular image. There are marketing strategies aimed at particular populations of interest, however they do not work perfectly. Here is some information about the current population breakdown of Rolex wearers and the company’s efforts at creating a customer profile.",
+"dui": "Consuming alcohol has a negative effect on a person's motor coordination. Drinking before driving a car increases the risk of an accident, but it is not the only cause for collisions. Here is some information about the current research on the underlying causes of car accidents.",
+"posture":"Children as young as seven years old are suffering from back problems due to poor posture. Some schools have made efforts at minimizing the risk factors for developing back posture by providing lockers so that students can avoid carrying heavy backpacks. Here is some information about the current research on bad posture and efforts to test for the factors that cause it. ",
+"rolex": "Rolex is a well-known brand of watches and the company devotes significant resources to maintaining a particular image. There are marketing strategies aimed at particular populations of interest, however they do not work perfectly. Here is some information about the current population breakdown of Rolex wearers and the company’s efforts at creating a customer profile.",
+"childAccidents": "Children who commute to school on their own are at risk of getting involved in an accident. There are a number of possible risk factors affecting their safety, however it remains unclear which risk factors are the most prominent. Here is some information about the current research on safety and efforts to identify risk factors.",
+"class": "College students often plan their coursework with a particular post-graduation life goal in mind. Particular life goals correspond to particular course choices, but the correlation is not perfect. Here is some information about the current research on the relationship between chosen coursework and career goals.",
+"cookies": "There is a large package of sweet or salty cookies with various kinds of shapes. Here is some information about the cookies.",
+"admissions": "Researchers have created a new aptitude test designed to predict a person’s chance of being admitted to ABC University. There has been some prediction success, however, the test is not perfect. Here is some information about the current research on the aptitude test and efforts to estimate its accuracy.",
+}
+
+var problem_text={
+"pregnancy": "There is a total of 100 women in the population. Out of the 100 women in the population, 20 are pregnant. Out of these 20 women, 18 will receive a positive test result and 2 will receive a negative test result. On the other hand, 80 women are not pregnant. Out of these 80 women, 2 will receive a positive test result and 78 will receive a negative test result.",
+"disease":  "There is a total of 100 people in the population. Out of the 100 people in the population, 6 people actually have the disease. Out of these 6 people, 4 will receive a positive test result and 2 will receive a negative test result. On the other hand, 94 people do not have the disease (i.e., they are perfectly healthy). Out of these 94 people, 16 will receive a positive test result and 78 will receive a negative test result.",
+// "cab":"Of every 100 cabs in the city, 15 are Blue and 85 are Green. On the night of the accident, a witness identified the cab as Blue. The court tested the reliability of the witness under the similar visibility conditions with Blue and Green cabs. When the cabs were really blue, the witness said they were Green in 80 out of 100 tests. When the cabs were really Green, the witness said they were Blue in 20 out of 100 tests.",
+"cab":"There is a total of 100 witnesses to the car accident. Out of the 100 witnesses, 15 claimed that the car which caused the accident was a cab. Out of these 15 witnesses, 12 claimed the car was blue and 3 claimed the car was green. On the other hand, 85 witnesses claimed that the car which caused the accident was not a cab. Out of these 85 witnesses, 3 claimed the car was blue and 82 claimed the car was green. ",
+"posture":"There is a total of 100 middle school students in the population. Out of the 100 students, 5 have bad posture. Out of these 5 students, 2 carry all their books to school every day and 3 keep all their books in lockers at school. On the other hand, 95 students have good posture. Out of these 95 students, 18 carry all their books to school every day and 77 keep all their books in lockers at school",
+"rolex": "There is a total of 100 watch wearers in the population. Out of these 100 watch wearers, 25 are executives. Out of these 25 executive individuals, 20 wear a Rolex watch and 5 wear a different watch brand. On the other hand, 75 watch wearers are not executives. Out of these 75 watch wearers, 50 wear a Rolex watch and 25 wear a different watch brand.",
+"dui": "There is a total of 100 car accidents. Out of the 100 car accidents, 10 were serious. Out of the 10 accidents, 7 were caused by drunk drivers and 3 were caused by sober drivers. On the other hand, 90 accidents were not serious. Out of the 90 accidents, 32 were caused by drunk drivers and 58 were caused by sober drivers.",
+"childAccidents": "There is a total of 100 student commuters in the populataion. Out of the 100 students, 3 were involved in an accident on their way to school. Out of these 3 students, 1 lived in an urban are and 2 did not. On the other hand, 97 students were not involved in an accident on the way to school (i.e., they were perfectly safe). Out of these 97 students, 39 lived in an urban area and  58 did not.",
+"class": "There is a total of 100 college freshmen in the population. Out of these 100 freshmen, 30 are enrolled in an introductory entrepreneurship course. Out of these 30 freshmen, 20 plan on going into business after graduation and 10 do not. On the other hand, 70 freshmen are not enrolled in an introductory entrepreneurship course. Out of these 70 freshmen, 10 plan on going into business after graduation and 60 do not.",
+"cookies":"In the package, 20 out of every 100 cookies are salty. Of the 20 salty cookies, 14 are round. Of the remaining 80 sweet cookies, 24 are also round.",
+"admissions": "There is a total of 100 applicants to ABC University. Out of these 100 applicants, 36 were admitted. Out of these 36 applicants, 27 were predicted by the test to be accepted and 9 were not. On the other hand, 64 college applicants were not admitted. Out of these 64 applicants, 17 predicted by the test to be accepted and 47 were not."
+
+}
+
+var data_vis_grouped= {
+"pregnancy": [[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],[19, 20],[21,22]],
+"disease":[[1, 2, 3, 4],[5, 6],[7, 8, 9, 10, 11, 12, 13, 14, 24, 25, 26, 27, 28, 29, 30, 31]],
+// "cab":[[1,2,3,4,5,6,7,8,9,10,11,12],[13,14,15,16,17,18, 19, 20, 21,22,23,24,25,26,27,28,29],[30, 31, 32, 33,34,35,36,37,38,39,40,41,42,43,44]],
+"cab":[[1,2,3,4,5,6,7,8,9,10,11,12],[13,14,15],[16,33,50]],
+"posture":[[1,2],[3,4,5],[6, 7, 8, 9, 10, 11, 12, 13,25,26,27,28,29,30,31,32]],
+"rolex": [[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],[21,22,23,24,25],[26,27,28,29,30,31,32,33,34,35,36,37,41,42,43,44,45,46,47,48,49,50,51,52,56,57,58,59,60,61,62,63,64,65,66,67,68,71,72,73,74,75,76,77,78,79,80,81,82,83]],
+"dui":[[1,2,3,4,5,6,8],[7,9,10],[11,12,13,14,15,16,17,18, 29,30,31,32,33,34,35,36, 47,48,49,50,51,52,53,54, 65,66,67,68,69,70,71,72]],
+"childAccidents":[[1],[2,3],[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42]],
+"class":[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],[21,22,23,24,25,26,27,28,29,30],[31,32,33,34,35,36,37,38,39,40]],
+"cookies": [[1,2,3,4,5,6,7,8,9,10,11,12,15,16],[13,14,17,18,19,20],[21,22,23,24,25,26,37,38,39,40,41,42,53,54,55,56,57,58,69,70,71,72,73,74]],
+"admissions": [[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],[28,29,30,31,32,33,34,35,36],[37,38,39,40,41,53,54,55,56,57,58,69,70,71,72,73,74]]
+//1st: orange guys within the yellow box
+//2nd: grey guys within the yellow box
+//3rd: orange guys as part of the blue box
+}
+
+var margin = {top:10, bottom:0, left:0, right:0};
+var icon_scale = '0.05';  //this makes icons 13.44 X 35.84
+var scenario_num=0;
+var condition_num=0;
+
+var scenario, condition, data_num_positive_test_positive, data_num_positive_test_negative, data_num_negative_test_positive,width,width2, height,height2,icon_width, icon_width2, data_words
+
+//=======secondary task global variables========
+var words_data
+
+var nextPage=1;
+var setRight=new Set()
+var setMissed=new Set()
+var setWrong=new Set()
+
+var dateInitial=new Date()
+var timeInitial=dateInitial.getTime()
+
+var errorRates=[]
+
+var totalWordsSeen=0
+
+var numFruits=0
+
+var totalFruitCount=0;
+var totalWordCount=0
+
+var timeout;
+var d_primes=[]
+
+var ans={}
+var data={}
+
+var hits=0;
+var false_alarm=0;
+var d_prime=0;
+var dprime;
+// var speed=experimentr.getData().speed75
+var speed=4000
+
+window.addEventListener("message", (event) => {
+        if (scenario_num==experimentr.getData().scenarios.length){
+            experimentr.addData(data)
+            experimentr.next()
+        }
+        else{
+        console.log("event")
+        console.log("message works")
+        document.getElementById("task").style.display="block"
+        document.getElementById("see_questions").style.display="block"
+        // document.getElementById("answers").style.display="none"
+        document.getElementById('answers').innerHTML=""
+        document.getElementById("submit_button").style.display="none"
+        document.getElementById("second_task").style.display="none"
+        document.getElementById("second_task").innerHTML=""
+
+        document.getElementById("nasatlx_iframe").style.display="none"
+        }
+        return;
+      // ...
+    }, false);
+
+
+d3.select("#nasatlx_iframe").style("visibility","hidden")
+
+
+function initialize(){
+    clearTimeout(timeout)
+    console.log("scenario_num is ",scenario_num)
+    scenario=experimentr.getData().scenarios[scenario_num]
+
+    console.log("scenario is ",scenario)
+
+    data_num_positive_test_positive = data_vis_grouped[scenario][0]; //blue cars correctly identified as blue: 12
+    data_num_positive_test_negative = data_vis_grouped[scenario][1];         //green cars incorrectly identified as blue: 17
+    data_num_negative_test_positive = data_vis_grouped[scenario][2]; //blue cars: 15
+
+
+    condition=experimentr.getData().conditions[condition_num]
+    console.log("condition is ",condition)
+    data[scenario+"_condition"]=condition
+
+    d3.select("#next-button").style("visibility","hidden")
+
+    //=========
+     if (scenario=="admissions"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("intro").innerHTML=intros["admissions"]
+        document.getElementById("problem_text").innerHTML=problem_text["admissions"]
+        document.getElementById("positive_text").innerHTML="Admitted"
+        document.getElementById("negative_text").innerHTML="Not admitted"
+        document.getElementById("test_positive_text").innerHTML="Acceptance predicted"
+        document.getElementById("test_negative_text").innerHTML="Acceptance not predicted"
+        width = 300;
+        width2 = 565;
+        height = 250;
+        height2 = 220;
+        icon_width = 9;
+        icon_width2 = 16; //num of columns in blue box
+    }
+    if (scenario=="pregnancy"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("intro").innerHTML=intros["pregnancy"]
+        document.getElementById("problem_text").innerHTML=problem_text["pregnancy"]
+        document.getElementById("positive_text").innerHTML="Pregnant"
+        document.getElementById("negative_text").innerHTML="Not Pregnancy"
+        document.getElementById("test_positive_text").innerHTML="Test positive"
+        document.getElementById("test_negative_text").innerHTML="Test negative"
+        width = 165;
+        width2 = 565;
+        height = 220;
+        height2 = 220;
+        icon_width = 4;
+        icon_width2 = 16;
+    }
+    if (scenario=="disease"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("intro").innerHTML=intros["disease"]
+        document.getElementById("problem_text").innerHTML=problem_text["disease"]
+        document.getElementById("positive_text").innerHTML="Has Disease"
+        document.getElementById("negative_text").innerHTML="Do not have disease"
+        document.getElementById("test_positive_text").innerHTML="Test positive"
+        document.getElementById("test_negative_text").innerHTML="Test negative"
+        width = 100;
+        width2 = 600;
+        height = 125;
+        height2 = 250;
+        icon_width = 2;
+        icon_width2 = 17;
+    }
+    if (scenario=="posture"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("intro").innerHTML=intros["posture"]
+        document.getElementById("problem_text").innerHTML=problem_text["posture"]
+        document.getElementById("positive_text").innerHTML="Has bad posture"
+        document.getElementById("negative_text").innerHTML="Do not have bad posture"
+        document.getElementById("test_positive_text").innerHTML="Carry books"
+        document.getElementById("test_negative_text").innerHTML="Do not carry books"
+        width = 172; //vertical space between icons in yellow box
+        width2 = 670;
+        height = 250; //height of svg for yellow box
+        height2 = 275;
+        icon_width = 1; //number of columns in yellow box
+        icon_width2 = 19; //number of columns in blue box
+    }
+    if (scenario=="cab"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("intro").innerHTML=intros["cab"]
+        document.getElementById("problem_text").innerHTML=problem_text["cab"]
+        document.getElementById("positive_text").innerHTML="Saw a cab"
+        document.getElementById("negative_text").innerHTML="Did not see a cab"
+        document.getElementById("test_positive_text").innerHTML="Saw a blue car"
+        document.getElementById("test_negative_text").innerHTML="Saw a green car"
+        width = 170;
+        width2 = 601;
+        height = 220;
+        height2 = 220;
+        icon_width = 3;
+        icon_width2 = 17;
+    }
+    if (scenario=="rolex"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("intro").innerHTML=intros["rolex"]
+        document.getElementById("problem_text").innerHTML=problem_text["rolex"]
+        document.getElementById("positive_text").innerHTML="Executives"
+        document.getElementById("negative_text").innerHTML="Not executives"
+        document.getElementById("test_positive_text").innerHTML="Wears Rolex"
+        document.getElementById("test_negative_text").innerHTML="Watch wearers"
+        width = 159; //vertical space between icons in yellow box
+        width2 = 530;
+        height = 250; //height of svg for yellow box
+        height2 = 250;
+        icon_width = 5; //number of columns in yellow box
+        icon_width2 = 15; //number of columns in blue box
+    }
+
+    if (scenario=="dui"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("intro").innerHTML=intros["dui"]
+        document.getElementById("problem_text").innerHTML=problem_text["dui"]
+        document.getElementById("positive_text").innerHTML="Serious"
+        document.getElementById("negative_text").innerHTML="Not serious"
+        document.getElementById("test_positive_text").innerHTML="Caused by drunk driver"
+        document.getElementById("test_negative_text").innerHTML="Caused by sober driver"
+        width = 175; //vertical space between icons in yellow box
+        width2 = 635;
+        height = 275; //height of svg for yellow box
+        height2 = 275;
+        icon_width = 2; //number of columns in yellow box
+        icon_width2 = 18; //number of columns in blue box
+    }
+    if (scenario=="childAccidents"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("intro").innerHTML=intros["childAccidents"]
+        document.getElementById("problem_text").innerHTML=problem_text["childAccidents"]
+        document.getElementById("positive_text").innerHTML="Involved in an accident"
+        document.getElementById("negative_text").innerHTML="Not involved in an accident"
+        document.getElementById("test_positive_text").innerHTML="Lives in an urban area"
+        document.getElementById("test_negative_text").innerHTML="Does not live in an urban area"
+        width = 103; //vertical space between icons in yellow box
+        width2 = 600;
+        height = 220; //height of svg for yellow box
+        height2 = 220;
+        icon_width = 1; //number of columns in yellow box
+        icon_width2 = 17; //number of columns in blue box
+    }
+    if (scenario=="class"){
+        document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
+        document.getElementById("title").innerHTML="Task"+ scenario_num+ " of 9"
+        document.getElementById("intro").innerHTML=intros["class"]
+        document.getElementById("problem_text").innerHTML=problem_text["class"]
+        document.getElementById("positive_text").innerHTML="Enrolled in class"
+        document.getElementById("negative_text").innerHTML="Not enrolled in class"
+        document.getElementById("test_positive_text").innerHTML="Going into business"
+        document.getElementById("test_negative_text").innerHTML="Not going into business"
+        width = 190;
+        width2 = 495;
+        height = 220;
+        height2 = 220;
+        icon_width = 6;
+        icon_width2 = 14;
+
+    }
+    if (scenario=="cookies"){
+        document.getElementById("title").innerHTML="Trial Round"
+        document.getElementById("intro").innerHTML=intros["cookies"]
+        document.getElementById("problem_text").innerHTML=problem_text["cookies"]
+        document.getElementById("positive_text").innerHTML="Salty cookies"
+        document.getElementById("negative_text").innerHTML="Sweet cookies"
+        document.getElementById("test_positive_text").innerHTML="Round cookies"
+        document.getElementById("test_negative_text").innerHTML="Not round cookies"
+        width = 165;
+        width2 = 565;
+        height = 220;
+        height2 = 220;
+        icon_width = 4;
+        icon_width2 = 16;
+
+    }
+    if (condition=="text"){
+        document.getElementById('labels').style.display="none"
+        document.getElementById('simple-example').style.display="none"
+        document.getElementById('problem_text').style.display="block"
+    }
+    else if (condition=="vis"){
+        document.getElementById('simple-example').style.display="block"
+        document.getElementById('labels').style.display="block"
+        document.getElementById('problem_text').style.display="none"
+        checks()
+    }
+    else if (condition=="vistext"){
+      document.getElementById('simple-example').style.display="block"
+        document.getElementById('labels').style.display="block"
+        document.getElementById('problem_text').style.display="block"
+        checks()
+    }
+     //checks()
+}
+
+(function() {
+  initialize();
+})();
+
+function checks() {
+
+    d3.selectAll('svg').remove();
+    d3.select('#simple-example')
+        .append('svg')
+            .attr('id', 'test')
+            .attr('width', width + width2)
+            .attr('height', height2)
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    //append svg defs
+    d3.select('#defs')
+        .append('svg')
+            .attr('height', 0)
+        .append('defs')
+        //.append('g')
+         //   .attr('id', 'icon')
+        .append("path")
+            .attr('id', 'icon')
+            .attr('d', 'M96 0c35.346 0 64 28.654 64 64s-28.654 64-64 64-64-28.654-64-64S60.654 0 96 0m48 144h-11.36c-22.711 10.443-49.59 10.894-73.28 0H48c-26.51 0-48 21.49-48 48v136c0 13.255 10.745 24 24 24h16v136c0 13.255 10.745 24 24 24h64c13.255 0 24-10.745 24-24V352h16c13.255 0 24-10.745 24-24V192c0-26.51-21.49-48-48-48z')
+            .attr('style', 'fill: var(--primary-color)');
+    draw_start()
+}
+
+function draw_start() {
+    var layout = d3_iconarray.layout().width(icon_width);
+    var layout2 = d3_iconarray.layout().width(icon_width2);
+
+    var data = d3.range(1,(data_num_positive_test_positive.length+data_num_positive_test_negative.length+1), 1);
+    var data2 = d3.range((data_num_positive_test_positive.length+data_num_positive_test_negative.length+1), 101, 1);
+
+    var grid = layout(data);
+    var grid2 = layout2(data2);
+
+    var arrayScale = d3_iconarray.scale()
+                                .domain([0, layout.maxDimension(data.length)])
+                                .range([0, width + (data_num_positive_test_positive.length+data_num_positive_test_negative.length)])
+                                .gapSize(0);
+    var arrayScale2 = d3_iconarray.scale()
+                            .domain([0, layout2.maxDimension(data2.length)])
+                            .range([0, width2])
+                            .gapSize(0);
+
+    if (scenario=="rolex" || scenario=="class"|| scenario=="cookies"  ||  scenario=="cab" || scenario=="admissions"){
+        var full_svg = d3.select('#test')
+                            .append('svg')
+                                .attr('width', width+30)
+                                .attr('height', height)
+                                .attr('id', 'full_svg')
+                            .append('g')
+                                .attr('id', 'big_g');
+    }
+    else{
+         var full_svg = d3.select('#test')
+                            .append('svg')
+                                .attr('width', width)
+                                .attr('height', height)
+                                .attr('id', 'full_svg')
+                            .append('g')
+                                .attr('id', 'big_g');
+    }
+    var full_svg2 = d3.select('#test')
+                        .attr('width', width+ width2+300)
+                .append('svg')
+                    .attr('width', width2+400)
+                    .attr('height', height2)
+                    .attr('id', 'full_svg2')
+                .append('g')
+                    .attr('id', 'big_g2');
+
+    full_svg.selectAll('g')
+            .data(grid)
+                .enter()
+            .append('rect')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale(d.position.x))*0.95 + ',' + (arrayScale(d.position.y))*0.95 + ')';
+                })
+                .attr('class', function(d) {
+                    if (data_num_positive_test_positive.includes(d.data)) {
+                        return 'have_disease_rect test_positive_rect have_disease_test_positive_rect';
+                    } else if (data_num_positive_test_negative.includes(d.data)) {
+                        return 'have_disease_rect test_negative_rect have_disease_test_negative_rect';
+                    } else if (data_num_negative_test_positive.includes(d.data)) {
+                        return 'do_not_have_disease_rect test_positive_rect do_not_have_disease_test_positive_rect';
+                    } else {
+                        return 'do_not_have_disease_rect test_negative_rect do_not_have_disease_test_negative_rect';
+                    }
+                });
+
+    full_svg.selectAll('g')
+            .data(grid)
+                .enter()
+            .append('g')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale(d.position.x) + 11) + ',' + (arrayScale(d.position.y) + 4) + ')';
+                })
+            .call(function(parent) {
+                parent.append('use')
+                    .attr('class', function(d) {
+                        if (data_num_positive_test_positive.includes(d.data)) {
+                            return 'have_disease test_positive have_disease_test_positive';
+                        } else if (data_num_positive_test_negative.includes(d.data)) {
+                            return 'have_disease test_negative have_disease_test_negative';
+                        } else if (data_num_negative_test_positive.includes(d.data)) {
+                            return 'do_not_have_disease test_positive do_not_have_disease_test_positive';
+                        } else {
+                            return 'do_not_have_disease test_negative do_not_have_disease_test_negative';
+                        }
+                    })
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
+            });
+
+    full_svg.selectAll('g#big_g')
+            .data(grid)
+                .enter()
+            .append('ellipse')
+                .attr('rx', 12)
+                .attr('ry', 16)
+                .attr('cx', 16)
+                .attr('cy', 17)
+                .attr('transform', function(d) {
+
+                    return 'translate(' + (arrayScale(d.position.x)) + ',' + (arrayScale(d.position.y)) + ')';
+                })
+                .attr('class', function(d) {
+                    if (data_num_positive_test_positive.includes(d.data)) {
+                        return 'have_disease_cir test_positive_cir have_disease_test_positive_cir';
+                    } else if (data_num_positive_test_negative.includes(d.data)) {
+                        return 'have_disease_cir test_negative_cir have_disease_test_negative_cir';
+                    } else if (data_num_negative_test_positive.includes(d.data)) {
+                        return 'do_not_have_disease_cir test_positive_cir do_not_have_disease_test_positive_cir';
+                    } else {
+                        return 'do_not_have_disease_cir test_negative_cir do_not_have_disease_test_negative_cir';
+                    }
+                });
+
+    full_svg2.selectAll('g')
+            .data(grid2)
+                .enter()
+            .append('rect')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale2(d.position.x) + 40*icon_width)*0.99 + ',' + (arrayScale2(d.position.y))*0.99 + ')';
+                })
+                .attr('class', function(d) {
+                    if (data_num_positive_test_positive.includes(d.data)) {
+                        return 'have_disease_rect test_positive_rect have_disease_test_positive_rect';
+                    } else if (data_num_positive_test_negative.includes(d.data)) {
+                        return 'have_disease_rect test_negative_rect have_disease_test_negative_rect';
+                    } else if (data_num_negative_test_positive.includes(d.data)) {
+                        return 'do_not_have_disease_rect test_positive_rect do_not_have_disease_test_positive_rect';
+                    } else {
+                        return 'do_not_have_disease_rect test_negative_rect do_not_have_disease_test_negative_rect';
+                    }
+                });
+
+    full_svg2.selectAll('g')
+            .data(grid2)
+                .enter()
+            .append('g')
+                .attr('transform', function(d) {
+                    return 'translate(' + (arrayScale2(d.position.x) + ((40*icon_width)+10)) + ',' + (arrayScale2(d.position.y) + 4) + ')';
+                })
+            .call(function(parent) {
+                parent.append('use')
+                    .attr('class', function(d) {
+                        if (data_num_positive_test_positive.includes(d.data)) {
+                            return 'have_disease test_positive have_disease_test_positive';
+                        } else if (data_num_positive_test_negative.includes(d.data)) {
+                            return 'have_disease test_negative have_disease_test_negative';
+                        } else if (data_num_negative_test_positive.includes(d.data)) {
+                            return 'do_not_have_disease test_positive do_not_have_disease_test_positive';
+                        } else {
+                            return 'do_not_have_disease test_negative do_not_have_disease_test_negative';
+                        }
+                    })
+                    .attr('xlink:href','#icon')
+                    .attr('transform','scale(' + icon_scale + ')');
+            });
+
+     full_svg2.selectAll('g#big_g2')
+            .data(grid2)
+                .enter()
+            .append('ellipse')
+                .attr('rx', 12)
+                .attr('ry', 16)
+                .attr('cx', 16)
+                .attr('cy', 17)
+                .attr('transform', function(d) {
+
+                    return 'translate(' + (arrayScale2(d.position.x) + 40*icon_width) + ',' + (arrayScale2(d.position.y)) + ')';
+                })
+                .attr('class', function(d) {
+                    if (data_num_positive_test_positive.includes(d.data)) {
+                        return 'have_disease_cir test_positive_cir have_disease_test_positive_cir';
+                    } else if (data_num_positive_test_negative.includes(d.data)) {
+                        return 'have_disease_cir test_negative_cir have_disease_test_negative_cir';
+                    } else if (data_num_negative_test_positive.includes(d.data)) {
+                        return 'do_not_have_disease_cir test_positive_cir do_not_have_disease_test_positive_cir';
+                    } else {
+                        return 'do_not_have_disease_cir test_negative_cir do_not_have_disease_test_negative_cir';
+                    }
+                });
+
+    d3.select(self.frameElement).style("height", height + "px");
+}
+
+function draw_have_disease(background_y_n, peeps_y_n) {
+    if (background_y_n === 'no') {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 1);
+    }
+    if (peeps_y_n === 'no') {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 0);
+        d3.selectAll('.have_disease')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.have_disease_rect')
+            .attr('opacity', 1);
+        d3.selectAll('.have_disease')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_do_not_have_disease(background_y_n, peeps_y_n) {
+    if (background_y_n === 'no') {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 1);
+    }
+    if (peeps_y_n === 'no') {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 0);
+        d3.selectAll('.do_not_have_disease')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.do_not_have_disease_rect')
+            .attr('opacity', 1);
+        d3.selectAll('.do_not_have_disease')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_test_positive(background_y_n, peeps_y_n) {
+    if (background_y_n === 'no') {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 1);
+    }
+    if (peeps_y_n === 'no') {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 0);
+        d3.selectAll('.test_positive')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_positive_rect')
+            .attr('opacity', 1);
+        d3.selectAll('.test_positive')
+            .attr('opacity', 1);
+    }
+}
+
+function draw_test_negative(background_y_n, peeps_y_n) {
+    if (background_y_n === 'no') {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 1);
+    }
+    if (peeps_y_n === 'no') {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 0);
+        d3.selectAll('.test_negative')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('.test_negative_rect')
+            .attr('opacity', 1);
+        d3.selectAll('.test_negative')
+            .attr('opacity', 1);
+    }
+}
+
+var moves = [];
+
+
+
+ //=============================================================================negative==========================================
+ //=======================================================================================================================
+ //=======================================================================================================================
+
+
+function draw_secondary(data_part2) {
+
+    var step=17;
+    var lineupCount=1;
+
+    console.log("in draw secondary")
+    console.log("words_data is ",words_data)
+
+    let svgHeight = 225;
+    let svgWidth = 820;
+
+    let svgContainer = d3.select("#second_task")
+                        .append("svg")
+                        .attr("width", svgWidth+600)
+                        .attr("height", svgHeight)
+                        .attr("id", "secondContainer");
+
+    var rect= svgContainer.append("rect")
+                .attr("x",0)
+                .attr("y",0)
+                .attr("height",190)
+                .attr("width",svgWidth+5)
+                .attr("fill","#FAFAFA")
+
+  var ready_go= svgContainer.append("text")
+                        .attr("id","ready_go")
+                        .attr("fill","#F5F5F5")
+                        .attr("x",svgWidth/2)
+                        .attr("y",(svgHeight/2)-10)
+                        .text("Ready")
+                        .attr("fill","darkgrey")
+                        .style("font-size","28px")
+                        .transition()
+                        .duration(speed/2)
+                        .text("Ready")
+                        .transition()
+                        .duration(speed/2)
+                        .text("Set")
+                        .transition()
+                        .duration(speed/2)
+                        .text("Go!")
+                        .transition()
+                        .duration(speed/2)
+                        .text(" ")
+                        .attr("visibility","hidden")
+
+    var cyanScore= svgContainer.append("text")
+                        .attr("id","cyanScore")
+                        .attr("fill","#F5F5F5")
+                        .attr("x",svgWidth+40)
+                        .attr("y",50)
+                        .text("0 words right")
+                        .attr("fill","cyan")
+                        .style("font-size","14px")
+                        .attr("visibility","hidden")
+
+    var magentaScore= svgContainer.append("text")
+                        .attr("id","magentaScore")
+                        .attr("fill","#F5F5F5")
+                        .attr("x",svgWidth+40)
+                        .attr("y",90)
+                        .text("0 words wrong")
+                        .attr("fill","magenta")
+                        .style("font-size","14px")
+                        .attr("visibility","hidden")
+
+    var yellowScore= svgContainer.append("text")
+                        .attr("id","yellowScore")
+                        .attr("fill","#F5F5F5")
+                        .attr("x",svgWidth+40)
+                        .attr("y",130)
+                        .text("0 words missed")
+                        .style("font-size","14px")
+                        .attr("fill","yellow")
+                        .attr("visibility","hidden")
+
+    // ===== HIDE SCORES===
+
+
+    let svg = svgContainer.append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .attr("id", "second_svg");
+
+
+     createLineUp()
+
+     function createLineUp(){
+      //=====DRAW LINEUP====
+         //increment lineupCount
+         increment=step+lineupCount;
+
+         var lineup=data_part2.slice(0,3)
+         data_part2=data_part2.slice(3,)
+         //loop back to start of list
+         if (lineup.length==0){
+            console.log("lineup is empty")
+            console.log("words data is ",words_data)
+            data_part2=words_data
+             var lineup=data_part2.slice(0,3)
+             data_part2=data_part2.slice(3,)
+         }
+        console.log("lineup is ",lineup)
+
+        // var xCoord=-60
+         var xCoord=5
+
+        // var borderSelect =
+
+        var border=svg.selectAll("#word_border2")
+                    .data(lineup)
+                    .enter()
+                    .append("rect")
+                    .attr("padding",0.5)
+                    .attr('stroke', '#bebebe')
+                    .attr('stroke-width', '1.2px')
+                    .attr("class", "word_border")
+                    .attr("id", "word_border2")
+                    .attr("fill","#F5F5F5")
+                    .attr("opacity",0.75)
+                    .attr("rx", 4)
+                    .attr("ry", 4)
+
+        border.attr("x", function(d,i){
+                // return (i%7)*150-200
+                if (i%3==0){
+                    xCoord-=150
+                    return xCoord
+                }
+                else{
+                    return xCoord
+                }
+            })
+            .attr("id",function(d,i){
+                console.log("index is "+"b"+parseInt(i+increment))
+                return "b"+parseInt(i+increment)
+            })
+            .attr("y", function(d,i){
+                return 20+(i%3)*50
+            })
+            .attr("width",function(d,i){
+                console.log("border length is ",d.word.length*10)
+                return (d.word.length*10)+15
+            })
+            .attr("height",40)
+            .on("mouseover",function(d){
+                d3.select(this).style("cursor", "pointer");
+            })
+             .on("click",function(d){
+                    if (this.getAttribute("stroke")!='#bebebe'){
+                            console.log("in if")
+                            this.setAttribute("stroke","#bebebe")
+                            var thisId=this.getAttribute("id").slice(1)
+                            document.getElementById(thisId).setAttribute("fill","#6a6a6a")
+                    }
+                    else{
+                        if (d.fruit==1){
+                            console.log("in border clicked")
+                            console.log("stroke color is ",this.getAttribute("stroke") )
+                               //change color of word
+                               this.setAttribute("stroke","cyan")
+                               //change border color
+                               var thisId=this.getAttribute("id").substring(1)
+                               document.getElementById(thisId).setAttribute("fill","cyan")
+                               //update score
+                                       //add word to set
+                               setRight.add(thisId)
+                               //update score
+                               var cyanScore=setRight.size
+                                //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                               d3.select("#cyanScore").text(cyanScore + " words right")
+                        }
+                        if (d.fruit==0){
+                             //change color of word
+                             this.setAttribute("stroke","magenta")
+                             //change border color
+                             var thisId=this.getAttribute("id").substring(1)
+                             document.getElementById(thisId).setAttribute("fill","magenta")
+                             //update score
+                             //add word to set
+                             setWrong.add(thisId)
+                             //update score
+                             var magentaScore=setWrong.size
+
+                             //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                             d3.select("#magentaScore").text(magentaScore + " words right")
+
+                        }
+                    }
+            })
+        // border.exit().remove()
+
+        var xCoord=15
+
+        var word=svg.selectAll("#lineup")
+                    .data(lineup)
+                    .enter()
+                    .append("text")
+                    .attr("id", "lineup")
+                    .attr("class", "words")
+                    .attr("padding",0.5)
+                    .attr("fill","#6a6a6a")
+     // Update (set the dynamic properties of the elements)
+
+         word.attr("x", function(d,i){
+                // return (i%7)*150-200
+                if (i%3==0){
+                    xCoord-=150
+                    return xCoord
+                }
+                else{
+                    return xCoord
+                }
+            })
+            .attr("y", function(d,i){
+                return 40+(i%3)*50
+            })
+            .attr("dy", ".35em")
+            .attr("id",function(d,i){
+               // return d
+                console.log("index is "+parseInt(i+increment))
+                return parseInt(i+increment)
+            })
+            .text(function(d) {
+                return d.word;
+            })
+            .style("font-size","14px")
+            .on("mouseover",function(d){
+                d3.select(this).style("cursor", "pointer");
+            })
+            .on("click",function(d){
+                    if (this.getAttribute("fill")!='#6a6a6a'){
+                            console.log("in if")
+                            this.setAttribute("fill","#6a6a6a")
+                            var thisId=this.getAttribute("id")
+                            document.getElementById("b"+thisId).setAttribute("stroke","#bebebe")
+                    }
+                    else{
+                        if (d.fruit==1){
+                           this.setAttribute("fill","cyan")
+                              //change border color
+                           var thisId=this.getAttribute("id")
+                           document.getElementById("b"+thisId).setAttribute("stroke","cyan")
+                           //add element to set
+                           //update score
+                           //add word to set
+                           setRight.add(thisId)
+                           //update score
+                           var cyanScore=setRight.size
+                           //var cyanScore = parseInt(d3.select("#cyanScore").text())+1
+                           d3.select("#cyanScore").text(cyanScore + " words right")
+                        }
+                        else{
+                            this.setAttribute("fill","magenta")
+                                              //change border color
+                           var thisId=this.getAttribute("id")
+                           document.getElementById("b"+thisId).setAttribute("stroke","magenta")
+                            //update score
+                           //add word to set
+                           setWrong.add(thisId)
+                           //update score
+                           var magentaScore=setWrong.size
+                           //var magentaScore = parseInt(d3.select("#magentaScore").text())+1
+                           d3.select("#magentaScore").text(magentaScore + " words wrong")
+                        }
+                    }
+
+                    this.disabled=true
+            })
+
+         word.exit().remove()
+
+
+        lineupCount+=3
+
+        // pregnancyTimeout = setTimeout(moveWords, 2000)
+        console.log("get speed data: ",speed)
+        timeout = setTimeout(moveWords, speed,speed)
+
+     }
+
+     function moveWords(speed){
+        console.log('MOVING WORDS (pregnancy)');
+        //move containers
+        d3.selectAll(".words")
+          .transition()
+          .duration(0.75*speed)
+          .attr("x", function(d,i){
+                var currX= +this.getAttribute('x')
+                var wordColor=this.getAttribute('fill')
+                var isFruit=d.fruit
+                if ((currX>svgWidth)){
+                    totalWordCount+=1
+                    this.remove()
+                }
+                if ((currX>svgWidth)&& (isFruit==1)){
+                    totalFruitCount+=1
+                    this.remove()
+                }
+                if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
+                    var yellowScore= parseInt(d3.select("#yellowScore").text())+1
+                    d3.select("#yellowScore").text(yellowScore + " words missed")
+                    this.remove()
+                }
+                if ((currX>svgWidth) && (wordColor=="cyan")){
+                    hits+=1
+                    this.remove()
+                }
+                if ((currX>svgWidth) && (wordColor=="magenta")){
+                    false_alarm+=1
+                    this.remove()
+                }
+                return currX + 150
+          })
+        //move borders
+        d3.selectAll(".word_border")
+          .transition()
+          .duration(0.75*speed)
+          .attr("x", function(d,i){
+                var currX= +this.getAttribute('x')
+                var wordColor=this.getAttribute('fill')
+                var isFruit=d.fruit
+                if ((currX>svgWidth) && (isFruit==1) && (wordColor=="white")){
+                    var yellowScore= parseInt(d3.select("#yellowScore").text())+1
+                    d3.select("#yellowScore").text(yellowScore + " words missed")
+                    this.remove()
+                }
+                if ((currX>svgWidth) && (wordColor=="cyan")){
+                    hits+=1
+                    this.remove()
+                }
+                if ((currX>svgWidth) && (wordColor=="magenta")){
+                    false_alarm+=1
+                    this.remove()
+                }
+                return currX + 150
+          })
+
+        //create new lineup
+        createLineUp()
+     }
+}
+
+
+function validate() {
+        //======SECONDARY TASK: COMPUTE D' SCORE=====
+         var hit_rate= hits/totalFruitCount
+         var fa_rate= false_alarm/(totalWordCount-totalFruitCount)
+
+        if (hit_rate=="0"){
+            hit_rate=0.01
+        }
+        if (fa_rate=="0"){
+            fa_rate=0.01
+        }
+        if (hit_rate=="1"){
+            hit_rate=0.99
+        }
+        if (fa_rate=="1"){
+            fa_rate=0.99
+        }
+        console.log("HITS: ",hits)
+        console.log("FALSE ALARMS: ",false_alarm)
+
+
+        d_prime= NormsInv(hit_rate) - NormsInv(fa_rate)
+        console.log("hit rate is ",hit_rate)
+        console.log("false alarm rate is ",fa_rate)
+        console.log("dprime is ",d_prime)
+
+        var perfect_dprime= NormsInv(0.99) - NormsInv(0.01)
+        console.log("total fruit count is ",totalFruitCount)
+        console.log("perfect d' is ", perfect_dprime)
+
+        var a1 = document.getElementById("ans1");
+        var a2 = document.getElementById("ans2");
+
+        if (a1.value == "" || a2.value == "") {
+                alert("Please fill in both blanks then submit your answer.");
+        } else {
+                // d3.select("#next-button").style("visibility","visible")
+                data[scenario+"_ans1"] = a1.value
+                data[scenario+"_ans2"]= a2.value
+                data[scenario+"_dprime"]= d_prime
+                data[scenario+"_perfect_dprime"]= perfect_dprime
+                data[scenario+"_accuracy"]= dprime/perfect_dprime
+                experimentr.endTimer('exp_'+scenario);
+        }
+
+        if (a1.value==ans1[scenario]){
+            data[scenario+"_ans1_correct"]=1
+        }
+         if (a2.value==ans1[scenario]){
+            data[scenario+"_ans2_correct"]=1
+        }
+
+        scenario_num++
+        condition_num++
+        console.log("scenario_num is ",scenario_num)
+        console.log("condition_num is ",condition_num)
+        document.getElementById("ans1").value=""
+        document.getElementById("ans2").value=""
+        //show iframe
+        document.getElementById("nasatlx_iframe").style.display="block"
+        d3.select("#nasatlx_iframe").style("visibility","visible").attr('src', `modules/custom_nasatlx.html?name=${scenario}`)
+        //hide task
+        document.getElementById("task").style.display="none"
+
+        experimentr.addData()
+
+        //show task when nasatlx is complete
+        if (scenario_num < experimentr.getData().scenarios.length){
+             initialize()
+
+        }
+
+ }
+
+  function calculate_bonus(){
+    console.log("in calculate_bonus")
+    //determine bonus
+
+    if ((data.ans1 == 20) & (data.ans2 == 18)){ //right answer
+        var bonus=0.5
+    }
+    else{
+        var bonus=0
+    }
+    data.bonus=bonus
+    experimentr.addBonus(bonus);
+    console.log(experimentr.getData())
+    experimentr.addData(data);
+  }
+
+function showQ() {
+        document.getElementById('answers').innerHTML = '<p>(a)'+ q1[scenario]+'<input type="number" id="ans1"><br>(b)' + q2[scenario] + '<input type="number" id="ans2">.</p>';
+        document.getElementById('submit_button').innerHTML = '<input type="submit" value="Submit" onClick=validate()>';
+        document.getElementById("submit_button").style.display="block"
+        document.getElementById("second_task").style.display="block"
+        experimentr.startTimer('exp_'+scenario);
+        nextPage++
+        loadData("list_of_words"+nextPage)
+}
+
+function loadData(listWords){
+    console.log("in load data")
+
+    // d3.csv("modules/exp/data/"+listWords+".csv",function(csv) {
+    //     data_words=csv
+    //     draw_secondary(data_words)
+    // })
+    console.log("in load data")
+    var data_part2
+
+     d3.csv("modules/exp/data/"+listWords+".csv",function(csv) {
+        data_words=csv
+        words_data=data_words
+        data_part2=data_words
+        draw_secondary(data_part2)
+    })
+}
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+function NormsInv(p) {
+    var a1 = -39.6968302866538, a2 = 220.946098424521, a3 = -275.928510446969;
+    var a4 = 138.357751867269, a5 = -30.6647980661472, a6 = 2.50662827745924;
+    var b1 = -54.4760987982241, b2 = 161.585836858041, b3 = -155.698979859887;
+    var b4 = 66.8013118877197, b5 = -13.2806815528857, c1 = -7.78489400243029E-03;
+    var c2 = -0.322396458041136, c3 = -2.40075827716184, c4 = -2.54973253934373;
+    var c5 = 4.37466414146497, c6 = 2.93816398269878, d1 = 7.78469570904146E-03;
+    var d2 = 0.32246712907004, d3 = 2.445134137143, d4 = 3.75440866190742;
+    var p_low = 0.02425, p_high = 1 - p_low;
+    var q, r;
+    var retVal;
+
+    if ((p < 0) || (p > 1))
+    {
+        //alert("NormsInv: Argument out of range.");
+        retVal = 0;
+    }
+    else if (p < p_low)
+    {
+        q = Math.sqrt(-2 * Math.log(p));
+        retVal = (((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+    }
+    else if (p <= p_high)
+    {
+        q = p - 0.5;
+        r = q * q;
+        retVal = (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q / (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1);
+    }
+    else
+    {
+        q = Math.sqrt(-2 * Math.log(1 - p));
+        retVal = -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+    }
+    return retVal;
+}
+
+</script>
