@@ -176,6 +176,7 @@ var hits=0;
 var false_alarm=0;
 var d_prime=0;
 var dprime;
+
 // var speed=experimentr.getData().speed75
 var speed=4000
 
@@ -347,7 +348,6 @@ function initialize(){
     }
     if (scenario=="class"){
         document.getElementById("title").innerHTML="Task "+ (scenario_num)+ " of "+((experimentr.getData().scenarios.length)-1)
-        document.getElementById("title").innerHTML="Task"+ scenario_num+ " of 9"
         document.getElementById("intro").innerHTML=intros["class"]
         document.getElementById("problem_text").innerHTML=problem_text["class"]
         document.getElementById("positive_text").innerHTML="Enrolled in class"
@@ -1087,7 +1087,7 @@ function validate() {
                 data[scenario+"_ans2"]= a2.value
                 data[scenario+"_dprime"]= d_prime
                 data[scenario+"_perfect_dprime"]= perfect_dprime
-                data[scenario+"_accuracy"]= dprime/perfect_dprime
+                data[scenario+"_accuracy"]= d_prime/perfect_dprime
                 experimentr.endTimer('exp_'+scenario);
         }
 
@@ -1106,7 +1106,7 @@ function validate() {
         document.getElementById("ans2").value=""
         //show iframe
         document.getElementById("nasatlx_iframe").style.display="block"
-        d3.select("#nasatlx_iframe").style("visibility","visible").attr('src', `modules/custom_nasatlx.html?name=${scenario}`)
+        d3.select("#nasatlx_iframe").style("visibility","visible").attr('src', `modules/custom_nasatlx.html?condition:${condition},name=${scenario}`)
         //hide task
         document.getElementById("task").style.display="none"
 

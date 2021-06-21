@@ -7,7 +7,7 @@
 <h2>Reasoning Study</h2>
 
 <p>
-Please fill out the following task load survey. "The task" refers to the previous page where you were asked to use a visualization and text to answer several questions. 
+Please fill out the following task load survey. "The task" refers to the previous page where you were asked to use a visualization and text to answer several questions.
 </p>
 
 <hr style="height:5px;border:none;color:#333;background-color:#333; align:"LEFT";" />
@@ -69,9 +69,13 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
 <script>
 
 (function() {
-  console.log("scenario nasa is ",scenario)
   var search= window.location.search
+  console.log("window location is ",window.location)
+  var condition=search.split(":")[1].split(",")[0]
   var scenario=search.split("=")[1]
+  console.log("scenario is",scenario)
+  console.log("condition is",condition)
+
   // console.log("data isss ",experimentr.getData())
   // console.log("scenario num is ",scenario)
 
@@ -80,7 +84,7 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
   // var scenario=experimentr.getData().scenario
 
   var data = {}
-  var flag = 0; 
+  var flag = 0;
   data[scenario+"_mental_demand"] = 0;
   data[scenario+"_physical_demand"] = 0;
   data[scenario+"_temporal_demand"] = 0;
@@ -93,8 +97,12 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
   // if (scenario_num==totalScenarios){
   //     console.log("scenario_num is ",scenario_num)
   //     console.log("totalScenarios is ",totalScenarios)
-  //     experimentr.onNext(cb); 
+  //     experimentr.onNext(cb);
   // }
+
+  if (condition!="vistext"){
+    document.getElementById("vis_vs_text").style.display="none"
+  }
 
   d3.select('#nextBtn').style("display","none")
 
@@ -108,15 +116,15 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
 
   // data.physical_demand = 0;
   // data.temporal_demand = 0;
-  // data.performance = 0; 
-  // data.effort = 0; 
-  // data.frustration = 0;  
+  // data.performance = 0;
+  // data.effort = 0;
+  // data.frustration = 0;
 
   function cb () {
-        experimentr.endTimer(scenario+'nasatlx'); 
-        experimentr.addData(data); 
+        experimentr.endTimer(scenario+'nasatlx');
+        experimentr.addData(data);
         console.log(experimentr.getData())
-  }; 
+  };
 
   d3.select("#next-button").style("visibility","visible")
 
@@ -124,43 +132,43 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'percent_text_vis' ? this : null; })
-  .on('change', function() { flag = 1; 
+  .on('change', function() { flag = 1;
                 data[scenario+"percent_text_vis"] = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'percent_task1' ? this : null; })
-  .on('change', function() { flag = 1; 
+  .on('change', function() { flag = 1;
                 data[scenario+"percent_task1"] = this.value; validate(); });
 
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'mental_demand' ? this : null; })
-  .on('change', function() { flag = 1; 
+  .on('change', function() { flag = 1;
                   data[scenario+"_mental_demand"] = this.value; validate(); });
 
   // d3.selectAll('input')
   // .filter(function(d) { return this.name === 'physical_demand' ? this : null; })
-  // .on('change', function() { flag = 1; 
+  // .on('change', function() { flag = 1;
   //               data.physical_demand = this.value; validate(); });
 
   // d3.selectAll('input')
   // .filter(function(d) { return this.name === 'temporal_demand' ? this : null; })
-  // .on('change', function() { flag = 1; 
+  // .on('change', function() { flag = 1;
   //               data.temporal_demand = this.value; validate(); });
 
   // d3.selectAll('input')
   // .filter(function(d) { return this.name === 'performance' ? this : null; })
-  // .on('change', function() { flag = 1; 
+  // .on('change', function() { flag = 1;
   //               data.performance = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'effort' ? this : null; })
-  .on('change', function() { flag = 1; 
+  .on('change', function() { flag = 1;
                   data[scenario+"_effort"] = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'frustration' ? this : null; })
-  .on('change', function() { flag = 1; 
+  .on('change', function() { flag = 1;
                 data[scenario+"_frustration"] = this.value; validate(); });
 
   function validate() {
@@ -177,8 +185,8 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
     for (answer in data) {
 
       //Odd numbered questions grading
-      if (answer == 'mental_demand' || answer == 'physical_demand' || 
-          answer == 'temporal_demand' || answer == 'performance' || 
+      if (answer == 'mental_demand' || answer == 'physical_demand' ||
+          answer == 'temporal_demand' || answer == 'performance' ||
           answer == 'effort' || answer == 'frustration') {
 
             score += data[answer];
@@ -191,7 +199,7 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
         continue;
       }
     }
-  
+
     data.nasatlx_score = score;
   }
 }());
