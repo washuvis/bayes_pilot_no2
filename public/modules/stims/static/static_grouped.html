@@ -1089,34 +1089,35 @@ function validate() {
                 data[scenario+"_perfect_dprime"]= perfect_dprime
                 data[scenario+"_accuracy"]= d_prime/perfect_dprime
                 experimentr.endTimer('exp_'+scenario);
+
+                 if (a1.value==ans1[scenario]){
+                    data[scenario+"_ans1_correct"]=1
+                }
+                 if (a2.value==ans1[scenario]){
+                    data[scenario+"_ans2_correct"]=1
+                }
+
+                scenario_num++
+                condition_num++
+                console.log("scenario_num is ",scenario_num)
+                console.log("condition_num is ",condition_num)
+                document.getElementById("ans1").value=""
+                document.getElementById("ans2").value=""
+                //show iframe
+                document.getElementById("nasatlx_iframe").style.display="block"
+                d3.select("#nasatlx_iframe").style("visibility","visible").attr('src', `modules/custom_nasatlx.html?condition:${condition},name=${scenario}`)
+                //hide task
+                document.getElementById("task").style.display="none"
+
+                experimentr.addData()
+
+                //show task when nasatlx is complete
+                if (scenario_num < experimentr.getData().scenarios.length){
+                     initialize()
+                }               
         }
 
-        if (a1.value==ans1[scenario]){
-            data[scenario+"_ans1_correct"]=1
-        }
-         if (a2.value==ans1[scenario]){
-            data[scenario+"_ans2_correct"]=1
-        }
 
-        scenario_num++
-        condition_num++
-        console.log("scenario_num is ",scenario_num)
-        console.log("condition_num is ",condition_num)
-        document.getElementById("ans1").value=""
-        document.getElementById("ans2").value=""
-        //show iframe
-        document.getElementById("nasatlx_iframe").style.display="block"
-        d3.select("#nasatlx_iframe").style("visibility","visible").attr('src', `modules/custom_nasatlx.html?condition:${condition},name=${scenario}`)
-        //hide task
-        document.getElementById("task").style.display="none"
-
-        experimentr.addData()
-
-        //show task when nasatlx is complete
-        if (scenario_num < experimentr.getData().scenarios.length){
-             initialize()
-
-        }
 
  }
 

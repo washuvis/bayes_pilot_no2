@@ -251,6 +251,7 @@ function checkPerformance(){
                 // ans.cali_dprime_hard=dprime_hard
                 console.log("ANS is ",ans)
                 experimentr.addData(ans); 
+                d3.selectAll('svg').remove();
                 experimentr.next(); 
               }
             }
