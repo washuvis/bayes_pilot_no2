@@ -82,7 +82,7 @@ var q2={
    "pregnancy":"Of those who test positive, how many are actually pregnant?" ,
     "disease":  "Of those who test positive, how many actually have the disease?",
     "posture":"Of those who carry all their books to school, how many will have bad posture?",
-    "cab": "Of those who say the car was blue, how many will say the car was a cab?",
+    "cab": "Of those who said the car was blue, how many will say the car was a cab?",
     "rolex":"Of those who wear rolex, how many are executives?",
     "dui": "Of those that are caused by drunk drivers, how many will be serious?",
     "childAccidents": "Of those who live in an urban area, how many will be involved in an accident?",
@@ -95,7 +95,7 @@ var q2={
 var intros={
 "pregnancy": "At home pregnancy tests detect the presence of hCG hormone in urine, which indicates pregnancy. However, home pregnancy tests are not perfect. Here is some information about the current research on home pregnancy tests and efforts to increase their accuracy.",
 "disease": "There is a newly discovered disease, Disease X, which is transmitted by a bacterial infection found in the population. There is a test to detect whether or not a person has the disease, but it is not perfect. Here is some information about the current research on Disease X and efforts to test for the infection that causes it.",
-"cab":"A car was involved in a hit-and-run accident at night. Two cab companies, the Green and the Blue, operate in the city. Here is some information about the cabs.",
+"cab":"Eyewitness testimony is an account given in the courtroom by a bystander who observed a specific event under investigation. However research shows that a lot of eyewitness testimonies can be inaccurate. Here is some information about the investigation of a car accident in which a driver rear-ended a legally parked car.",
 "posture":"Children as young as seven years old are suffering from back problems due to poor posture. Some schools have made efforts at minimizing the risk factors for developing back posture by providing lockers so that students can avoid carrying heavy backpacks. Here is some information about the current research on bad posture and efforts to test for the factors that cause it.",
 "rolex": "Rolex is a well-known brand of watches and the company devotes significant resources to maintaining a particular image. There are marketing strategies aimed at particular populations of interest, however they do not work perfectly. Here is some information about the current population breakdown of Rolex wearers and the company’s efforts at creating a customer profile.",
 "dui": "Consuming alcohol has a negative effect on a person's motor coordination. Drinking before driving a car increases the risk of an accident, but it is not the only cause for collisions. Here is some information about the current research on the underlying causes of car accidents.",
@@ -111,7 +111,7 @@ var problem_text={
 "pregnancy": "There is a total of 100 women in the population. Out of the 100 women in the population, 20 are pregnant. Out of these 20 women, 18 will receive a positive test result and 2 will receive a negative test result. On the other hand, 80 women are not pregnant. Out of these 80 women, 2 will receive a positive test result and 78 will receive a negative test result.",
 "disease":  "There is a total of 100 people in the population. Out of the 100 people in the population, 6 people actually have the disease. Out of these 6 people, 4 will receive a positive test result and 2 will receive a negative test result. On the other hand, 94 people do not have the disease (i.e., they are perfectly healthy). Out of these 94 people, 16 will receive a positive test result and 78 will receive a negative test result.",
 // "cab":"Of every 100 cabs in the city, 15 are Blue and 85 are Green. On the night of the accident, a witness identified the cab as Blue. The court tested the reliability of the witness under the similar visibility conditions with Blue and Green cabs. When the cabs were really blue, the witness said they were Green in 80 out of 100 tests. When the cabs were really Green, the witness said they were Blue in 20 out of 100 tests.",
-"cab":"There is a total of 100 witnesses to the car accident. Out of the 100 witnesses, 15 claimed that the car which caused the accident was a cab. Out of these 15 witnesses, 12 claimed the car was blue and 3 claimed the car was green. On the other hand, 85 witnesses claimed that the car which caused the accident was not a cab. Out of these 85 witnesses, 3 claimed the car was blue and 82 claimed the car was green. ",
+"cab":"There is a total of 100 witnesses to the car accident. Out of the 100 witnesses, 15 claimed that the car which caused the accident was a cab. Out of these 15 witnesses, 12 claimed the car was blue and 3 claimed the car was another color. On the other hand, 85 witnesses claimed that the car which caused the accident was not a cab. Out of these 85 witnesses, 3 claimed the car was blue and 82 claimed the car was another color. ",
 "posture":"There is a total of 100 middle school students in the population. Out of the 100 students, 5 have bad posture. Out of these 5 students, 2 carry all their books to school every day and 3 keep all their books in lockers at school. On the other hand, 95 students have good posture. Out of these 95 students, 18 carry all their books to school every day and 77 keep all their books in lockers at school",
 "rolex": "There is a total of 100 watch wearers in the population. Out of these 100 watch wearers, 25 are executives. Out of these 25 executive individuals, 20 wear a Rolex watch and 5 wear a different watch brand. On the other hand, 75 watch wearers are not executives. Out of these 75 watch wearers, 50 wear a Rolex watch and 25 wear a different watch brand.",
 "dui": "There is a total of 100 car accidents. Out of the 100 car accidents, 10 were serious. Out of the 10 accidents, 7 were caused by drunk drivers and 3 were caused by sober drivers. On the other hand, 90 accidents were not serious. Out of the 90 accidents, 32 were caused by drunk drivers and 58 were caused by sober drivers.",
@@ -292,7 +292,7 @@ function initialize(){
         document.getElementById("positive_text").innerHTML="Saw a cab"
         document.getElementById("negative_text").innerHTML="Did not see a cab"
         document.getElementById("test_positive_text").innerHTML="Saw a blue car"
-        document.getElementById("test_negative_text").innerHTML="Saw a green car"
+        document.getElementById("test_negative_text").innerHTML="Did not see a blue car"
         width = 170;
         width2 = 601;
         height = 220;
