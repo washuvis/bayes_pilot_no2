@@ -48,7 +48,7 @@ var ans1={
     "dui": 39,
     "childAccidents":40,
     "class": 30,
-    "admission": 44,
+    "admissions": 44,
     "cookies": 38
 
 }
@@ -61,7 +61,7 @@ var ans2={
     "dui": 7,
     "childAccidents":1,
     "class": 20,
-    "admission":27 ,
+    "admissions":27 ,
     "cookies": 11
 }
 var q1={
@@ -145,6 +145,8 @@ var scenario_num=0;
 var condition_num=0;
 
 var scenario, condition, data_num_positive_test_positive, data_num_positive_test_negative, data_num_negative_test_positive,width,width2, height,height2,icon_width, icon_width2, data_words
+var bonus
+var totalBonus=0
 
 //=======secondary task global variables========
 var words_data
@@ -177,17 +179,32 @@ var false_alarm=0;
 var d_prime=0;
 var dprime;
 
-var speed=experimentr.getData().speed75
-// var speed=4000
+// var speed=experimentr.getData().speed75
+var speed=4000
 
 window.addEventListener("message", (event) => {
         if (scenario_num==experimentr.getData().scenarios.length){
+            data["totalBonus"]=totalBonus
             experimentr.addData(data)
             experimentr.next()
         }
         else{
         console.log("event")
         console.log("message works")
+        scenario_prev=experimentr.getData().scenarios[scenario_num-1]
+        console.log(scenario_prev)
+        console.log(event.data[scenario_prev+"_mental_demand"])
+        console.log(event.data[scenario_prev+"_percent_task1"])
+
+        data[scenario_prev+"_percent_task1"]=event.data[scenario_prev+"_percent_task1"]
+        data[scenario_prev+"_mental_demand"]=event.data[scenario_prev+"_mental_demand"]
+        data[scenario_prev+"_effort"]=event.data[scenario_prev+"_effort"]
+        data[scenario_prev+"_frustration"]=event.data[scenario_prev+"_frustration"]
+        if (condition=="vistext"){
+          data[scenario_prev+"_percent_text_vis"]=event.data[scenario_prev+"_percent_text_vis"]
+
+        }
+        experimentr.addData(data)
         document.getElementById("task").style.display="block"
         document.getElementById("see_questions").style.display="block"
         // document.getElementById("answers").style.display="none"
@@ -207,6 +224,9 @@ d3.select("#nasatlx_iframe").style("visibility","hidden")
 
 
 function initialize(){
+
+
+    bonus=0  //set bonus to 0
     clearTimeout(timeout)
     console.log("scenario_num is ",scenario_num)
     scenario=experimentr.getData().scenarios[scenario_num]
@@ -1092,11 +1112,20 @@ function validate() {
 
                  if (a1.value==ans1[scenario]){
                     data[scenario+"_ans1_correct"]=1
+                    bonus+=0.5
+                    totalBonus+=0.5
                 }
-                 if (a2.value==ans1[scenario]){
+                else{
+                    data[scenario+"_ans1_correct"]=0
+                }
+                 if (a2.value==ans2[scenario]){
                     data[scenario+"_ans2_correct"]=1
+                    bonus+=0.5
+                    totalBonus+=0.5
                 }
-
+                else{
+                    data[scenario+"_ans2_correct"]=0
+                }
                 scenario_num++
                 condition_num++
                 console.log("scenario_num is ",scenario_num)
@@ -1109,33 +1138,33 @@ function validate() {
                 //hide task
                 document.getElementById("task").style.display="none"
 
+
+                data[scenario+"_bonus"]=bonus
                 experimentr.addData()
+                console.log("data now is ",experimentr.getData())
 
                 //show task when nasatlx is complete
                 if (scenario_num < experimentr.getData().scenarios.length){
                      initialize()
-                }               
+                }
         }
-
-
-
  }
 
-  function calculate_bonus(){
-    console.log("in calculate_bonus")
-    //determine bonus
+  // function calculate_bonus(){
+  //   console.log("in calculate_bonus")
+  //   //determine bonus
 
-    if ((data.ans1 == 20) & (data.ans2 == 18)){ //right answer
-        var bonus=0.5
-    }
-    else{
-        var bonus=0
-    }
-    data.bonus=bonus
-    experimentr.addBonus(bonus);
-    console.log(experimentr.getData())
-    experimentr.addData(data);
-  }
+  //   if ((data.ans1 == 20) & (data.ans2 == 18)){ //right answer
+  //       var bonus=0.5
+  //   }
+  //   else{
+  //       var bonus=0
+  //   }
+  //   data.bonus=bonus
+  //   experimentr.addBonus(bonus);
+  //   console.log(experimentr.getData())
+  //   experimentr.addData(data);
+  // }
 
 function showQ() {
         document.getElementById('answers').innerHTML = '<p>(a)'+ q1[scenario]+'<input type="number" id="ans1"><br>(b)' + q2[scenario] + '<input type="number" id="ans2">.</p>';

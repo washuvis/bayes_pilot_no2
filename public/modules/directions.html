@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ -->
+ 	
+ </head>
+
+<body>
+
 <div id="directions">
 
 <h2>Reasoning Study Instructions</h2>
@@ -16,7 +26,7 @@ You will have to attempt the word selection task while answering the two reasoni
 After each task, you will be asked to fill a short <b> questionaire</b> about your experience. Please answer all the questions to the best of your ability.
 </p>
 
-<img src="modules/secondary_demo.jpg" width="100%">
+<img src="modules/secondary_demo.jpg" style="max-width:100%;height:auto;">
 
 <p style="clear:both;">
 After you have read the above instructions, click Start to begin the experiment. 
@@ -26,18 +36,35 @@ After you have read the above instructions, click Start to begin the experiment.
 
 <style>
         #images {
-                
+
         }
+        body,html {
+        }
+        div#directions{
+        	overflow: hidden;
+/*        	resize:both;
+*//*       	position:relative;
+        	height:window.innerHeight;*/
+			
+      }
+		body {overflow: hidden; }
+
 </style>
 
+</body>
+</html>
+
 <script>
+
+
 (function() {
 
         init(); 
 
         function init() {
                 experimentr.hideNext(); 
-
+				console.log("screen height: ", screen.height, " screen width is: " ,screen.width)
+				console.log("window height: ", window.innerHeight, " window width is: " ,window.innerWidth)
                 d3.select('#start').on('click', experimentr.next); 
 
         }

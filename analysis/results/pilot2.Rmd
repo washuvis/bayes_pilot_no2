@@ -1,0 +1,318 @@
+## Libraries
+
+```{r}
+library(ggplot2)        # ggplot, stat_..., geom_..., etc
+library(jsonlite)
+library("rjson")
+library(dplyr)
+library(ggridges)
+library(base)
+library(rlist)
+```
+
+## Import data
+
+```{r}
+json_data <- read_json(path='data.json', simplifyVector = TRUE)
+data=json_data[!is.na(json_data$comments),] # drop rows if the comment section is blank (incomplete experiment)
+#emptycols <- sapply(data, function (k) all(is.na(k))) # drop empty columns
+#data <- data[!emptycols]
+data
+```
+
+## Time taken
+
+```{r}
+list_times= as.numeric(data$time_diff_experiment)
+list_times
+mean_time=mean(list_times)
+print(mean_time/1000/60)
+```
+
+## Observations
+### ans2_correct is missing from code (typo)
+### ans1_correct=0 is missing from code
+### admission ans1_correct is missing (typo in ans1 and ans2 arrays)
+### nasatlx questionnaire not recorded
+
+## Data Pre Processing
+
+```{r}
+data_ans2<- read_json(path='ans2.json', simplifyVector = TRUE)
+data_ans2
+```
+
+```{r}
+postId_list = data$postId
+postId_list
+
+```
+
+
+```{r}
+i <- 0
+vistext_ans1=0
+vis_ans1=0
+text_ans1=0
+vistext_ans2=0
+vis_ans2=0
+text_ans2=0
+vistext_accuracy=0  #accuracy on task 2
+text_accuracy=0
+vis_accuracy=0
+vistext_timediff=0 #time on task
+text_timediff=0 
+vis_timediff=0 
+vistext_accuracy_list=c()
+vistext_timediff_list=c()
+vistext_ans1_list=c()
+vistext_ans2_list=c()
+vis_accuracy_list=c()
+vis_timediff_list=c()
+vis_ans1_list=c()
+vis_ans2_list=c()
+text_accuracy_list=c()
+text_timediff_list=c()
+text_ans1_list=c()
+text_ans2_list=c()
+all_scenarios=c()
+all_conditions=c()
+all_id=c()
+
+postId_list= data$postId
+for (scenarios in data$scenarios){
+  i <- i+1
+  conditions_list = as.list(strsplit(data$conditions[i],","))[[1]]
+  scenario_list = as.list(strsplit(scenarios, ","))[[1]]
+  
+  j<-0
+  for (scenario in scenario_list){
+    j <- j+1
+    condition=conditions_list[j]
+    #ans1
+    ans1_col= paste(scenario,"ans1_correct",sep="_")
+    ans1_correct<-data[[ans1_col]][[i]]
+    #ans2
+    ans2= paste(scenario,"ans2",sep="_")
+    ans2_scenario<-as.numeric(data[[ans2]][[i]]) 
+    ans2_correct<-as.numeric(data_ans2[[scenario]])
+    ans2_isCorrect <- identical(ans2_correct,ans2_scenario)
+    #time_diff
+    time_diff_col= paste("time_diff_exp", scenario,sep="_")
+    time_diff<-as.numeric(data[[time_diff_col]][[i]])
+    #dprime accuracy
+    accuracy_col= paste(scenario,"accuracy",sep="_")
+    accuracy<-as.numeric(data[[accuracy_col]][[i]])
+    #=============================ASSIGN VARIABLES===================================
+    if (scenario!="cookies"){
+      all_scenarios <- c(all_scenarios,scenario)
+      all_conditions <- c(all_conditions,condition)
+      all_id <- c(all_id,postId_list[i])
+
+      #assign dprime accuracy
+      var_accuracy= eval(paste(condition,"accuracy",sep="_"))
+      assign(var_accuracy, get(var_accuracy)+accuracy)
+      #assign time
+      var_time= eval(paste(condition,"timediff",sep="_"))
+      assign(var_time, get(var_time)+time_diff) 
+
+      if (condition=="vistext"){
+      vistext_ans2_list <- c(vistext_ans2_list,ans2_isCorrect)
+      vistext_ans1_list <- c(vistext_ans1_list,ans1_correct)
+      vistext_timediff_list <- c(vistext_timediff_list,time_diff)
+      vistext_accuracy_list <- c(vistext_accuracy_list,accuracy)
+      }
+      if (condition=="vis"){
+         vis_ans2_list <- c(vis_ans2_list,ans2_isCorrect)
+        vis_ans1_list <- c(vis_ans1_list,ans1_correct)
+        vis_timediff_list <- c(vis_timediff_list,time_diff)
+        vis_accuracy_list <- c(vis_accuracy_list,accuracy)     
+        
+      }
+      if (condition=="text"){
+        text_ans2_list <- c(text_ans2_list,ans2_isCorrect)
+        text_ans1_list <- c(text_ans1_list,ans1_correct)
+        text_timediff_list <- c(text_timediff_list,time_diff)
+        text_accuracy_list <- c(text_accuracy_list,accuracy)       
+        
+      }
+      if (ans2_isCorrect){
+            var_nam= eval(paste(condition,"ans2",sep="_"))
+            assign(var_nam, get(var_nam)+1) 
+      }
+      if (!is.null(ans1_correct) && !is.na(ans1_correct) &&  ans1_correct=="1"){
+            var_nam= eval(paste(condition,"ans1",sep="_"))
+            assign(var_nam, get(var_nam)+1)
+      }
+      if (scenario=="admissions"){
+            ans1= paste(scenario,"ans1",sep="_")
+            ans1_admissions<-data[[ans1]][[i]]
+            if (ans1_admissions=="44"){
+              var_nam= eval(paste(condition,"ans1",sep="_"))
+              assign(var_nam, get(var_nam)+1) 
+                    if (condition=="vistext"){
+                        vistext_ans1_list <- c(vistext_ans1_list,"1")
+                    }
+                    if (condition=="vis"){
+                        vis_ans1_list <- c(vis_ans1_list,"1")
+                    } 
+                    if (condition=="text"){
+                        text_ans1_list <- c(text_ans1_list,"1")
+                    }   
+            }
+            else{
+                    if (condition=="vistext"){
+                        vistext_ans1_list <- c(vistext_ans1_list,"NA")
+                    }
+                    if (condition=="vis"){
+                        vis_ans1_list <- c(vis_ans1_list,"1NA")
+                    } 
+                    if (condition=="text"){
+                        text_ans1_list <- c(text_ans1_list,"1NA")
+                    }     
+            }
+      }
+    }
+
+  }
+}
+
+```
+
+
+## Means
+
+```{r}
+print("========")
+print(vistext_ans1)
+print(vistext_ans2)
+print(vistext_accuracy/(3*i))
+print(vistext_timediff/(3*i))
+print("========")
+print(vis_ans1)
+print(vis_ans2)
+print(vis_accuracy/(3*i))
+print(vis_timediff/(3*i))
+print("========")
+print(text_ans1)
+print(text_ans2)
+print(text_accuracy/(3*i))
+print(text_timediff/(3*i))
+```
+
+## Distribution
+
+```{r}
+print(vistext_ans1_list)
+print(vistext_ans2_list)
+print(vistext_accuracy_list)
+print(vistext_timediff_list)
+print("========")
+print(vis_ans1_list)
+print(vis_ans2_list)
+print(vis_accuracy_list)
+print(vis_timediff_list)
+print("========")
+print(text_ans1_list)
+print(text_ans2_list)
+print(text_accuracy_list)
+print(text_timediff_list)
+```
+
+## Make new dataframe
+
+
+```{r}
+scenario=all_scenarios
+condition=all_conditions
+postId=all_id
+ans1_correct=c(vistext_ans1_list,vis_ans1_list,text_ans1_list)
+ans2_correct=c(vistext_ans2_list,vis_ans2_list,text_ans2_list)
+dprime_accuracy=c(vistext_accuracy_list,vis_accuracy_list,text_accuracy_list)
+timediff=c(vistext_timediff_list,vis_timediff_list,text_timediff_list)
+
+data_new<-data.frame(postId,scenario,condition,ans1_correct,ans2_correct,dprime_accuracy,timediff)
+data_new$ans1_correct=as.numeric(data_new$ans1_correct)
+data_new$postId=as.character(data_new$postId)
+data_new$timediff=as.numeric(data_new$timediff)/1000
+
+data_new["ans1_correct"][data_new["ans1_correct"] == 1] <- "TRUE"
+data_new["ans1_correct"][is.na(data_new["ans1_correct"])] <- "FALSE"
+
+data_new$both_correct
+
+data_new
+```
+
+## Ophelie vs mam
+
+```{r}
+data_sub=subset(data_new, postId=='kqjgfxiu' | postId=='kqfa9uu1')
+data_sub
+
+data_sub %>%
+  ggplot(aes(y=condition,
+                      x=dprime_accuracy)) +
+  geom_density_ridges(alpha=0.4,color="red",fill="red") +
+ theme(panel.background = element_blank())+
+      facet_grid(.~postId)
+
+
+data_sub %>%
+  ggplot(aes(y=condition,
+                      x=timediff)) +
+  geom_density_ridges(alpha=0.5,color="steelblue",fill="steelblue") +
+ theme(panel.background = element_blank())+
+      facet_grid(.~postId)
+
+ggplot(data_sub, aes(x=ans1_correct))+ 
+  geom_bar(color="darkgrey",fill="darkgrey")+
+  facet_grid(.~postId)
+
+ggplot(data_sub, aes(x=ans2_correct))+ 
+  geom_bar(color="darkgrey",fill="darkgrey")+
+  facet_grid(.~postId)
+
+ggplot(data_sub, aes(x=dprime_accuracy))+ 
+  geom_bar(color="darkgrey",fill="darkgrey")+
+    facet_grid(.~postId)
+```
+
+
+## Graphs 
+
+```{r}
+data_new %>%
+  ggplot(aes(y=condition,
+                      x=dprime_accuracy)) +
+  geom_density_ridges(alpha=0.5,color="steelblue",fill="steelblue") +
+ theme(panel.background = element_blank())
+
+ggplot(data_new, aes(x=dprime_accuracy))+ 
+  geom_bar(color="darkgrey",fill="darkgrey")+
+    facet_grid(.~condition)
+
+```
+
+```{r}
+ggplot(data_new, aes(x=ans1_correct))+ 
+  geom_bar(color="darkgrey",fill="darkgrey")+
+  facet_grid(.~condition)
+
+
+ggplot(data_new, aes(x=ans2_correct))+ 
+  geom_bar(color="darkgrey",fill="darkgrey")+
+  facet_grid(.~condition)
+
+ggplot(data_new, aes(x=ans2_correct))+ 
+  geom_bar(color="darkgrey",fill="darkgrey")+
+  facet_grid(.~ans1_correct)
+
+data_new %>%
+  filter( ans1_correct=="TRUE" ) %>%
+  ggplot(aes(x=ans2_correct))+ 
+  geom_bar(color="darkgrey",fill="darkgrey")+
+  facet_grid(.~condition)
+
+
+```

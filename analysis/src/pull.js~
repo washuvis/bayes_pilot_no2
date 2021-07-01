@@ -4,7 +4,7 @@
 var fs      = require('fs')
   , dataset = []
   , redis   = require('redis')
-  , rport   = 6382
+  , rport   = 6381
   , client
 
 client = redis.createClient(rport)

@@ -91,6 +91,8 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
   data[scenario+"_performance"] = 0;
   data[scenario+"_effort"] = 0;
   data[scenario+"_frustration"] = 0;
+  data[scenario+"_percent_task1"] = 0;
+  data[scenario+"_percent_text_vis"] = 0;
 
   experimentr.startTimer(scenario+'nasatlx')
 
@@ -107,9 +109,11 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
   d3.select('#nextBtn').style("display","none")
 
   d3.select("#nextBtn").on("click",function(){
+    experimentr.endTimer(scenario+'nasatlx');
+    experimentr.addData(data);
+    console.log("data after nasatlx is ",experimentr.getData())
     //post message
-    cb()
-    window.parent.postMessage("button_click")
+    window.parent.postMessage(data)
     // document.getElementById("task").style.display="block"
     // document.getElementById("nasatlx_iframe").style.display="none"
   })
@@ -120,11 +124,6 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
   // data.effort = 0;
   // data.frustration = 0;
 
-  function cb () {
-        experimentr.endTimer(scenario+'nasatlx');
-        experimentr.addData(data);
-        console.log(experimentr.getData())
-  };
 
   d3.select("#next-button").style("visibility","visible")
 
@@ -133,33 +132,18 @@ Very Low<input type="range" name ="frustration" min="0" max="20" value="0" step=
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'percent_text_vis' ? this : null; })
   .on('change', function() { flag = 1;
-                data[scenario+"percent_text_vis"] = this.value; validate(); });
+                data[scenario+"_percent_text_vis"] = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'percent_task1' ? this : null; })
   .on('change', function() { flag = 1;
-                data[scenario+"percent_task1"] = this.value; validate(); });
+                data[scenario+"_percent_task1"] = this.value; validate(); });
 
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'mental_demand' ? this : null; })
   .on('change', function() { flag = 1;
                   data[scenario+"_mental_demand"] = this.value; validate(); });
-
-  // d3.selectAll('input')
-  // .filter(function(d) { return this.name === 'physical_demand' ? this : null; })
-  // .on('change', function() { flag = 1;
-  //               data.physical_demand = this.value; validate(); });
-
-  // d3.selectAll('input')
-  // .filter(function(d) { return this.name === 'temporal_demand' ? this : null; })
-  // .on('change', function() { flag = 1;
-  //               data.temporal_demand = this.value; validate(); });
-
-  // d3.selectAll('input')
-  // .filter(function(d) { return this.name === 'performance' ? this : null; })
-  // .on('change', function() { flag = 1;
-  //               data.performance = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'effort' ? this : null; })

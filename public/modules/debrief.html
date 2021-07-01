@@ -20,7 +20,7 @@
 
 <style>
 </style>
-<script> 
+<script>
 (function() {
   var postId  = experimentr.postId
   	, payment = (experimentr.getBonus())
@@ -33,13 +33,13 @@
   var comments = d3.select('#debrief').select('textarea')
     .on('keypress', function() { d3.select('#submitComments').attr('disabled', null); })
     .on('blur', function() { d3.select('#submitComments').attr('disabled', null); });
-  
+
   d3.select('#submitComments')
-    .on('click', function () { 
-    	data.comments = comments.property('value'); 
+    .on('click', function () {
+    	data.comments = comments.property('value');
     	validate(); });
   function validate() {
-    if( data.comments ) { 
+    if( data.comments ) {
       console.log("DATA IS ",experimentr.getData())
       experimentr.addData(data);
       d3.select('#submitComments').style('visibility', 'hidden');
@@ -49,9 +49,8 @@
     else{
       d3.select('#submitComments').style('visibility', 'hidden');
       d3.select('#debrief').select('textarea').style('visibility', 'hidden');
-      d3.select('#submitFeedback').text('Submit Successful');      
+      d3.select('#submitFeedback').text('Submit Successful');
     }
   }
 }());
 </script>
-
